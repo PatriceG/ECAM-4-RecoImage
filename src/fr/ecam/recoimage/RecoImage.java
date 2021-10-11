@@ -33,7 +33,7 @@ public class RecoImage {
 			// URL du service à appeler
 			String service_url = String.format("https://api.clarifai.com/v2/models/%s/outputs",MODEL_ID);		
 
-			//contruction manuelle de JSON, envisageable pour un petit flux, sinon on passe plutôt par l'API de manipulation de JSON
+			//construction manuelle de JSON, envisageable pour un petit flux, sinon on passe plutôt par l'API de manipulation de JSON
 			String payload = "{\"inputs\": [{\"data\": {\"image\": {\"url\": \""+url+"\"}}}]}";
 
 			//TODO PARTIE 2 du TP: utiliser le Jackson TreeModel pour construire le flux payload au lieu de passer par une chaine de caractères
