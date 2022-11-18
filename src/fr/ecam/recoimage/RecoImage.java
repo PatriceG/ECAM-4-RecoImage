@@ -81,7 +81,28 @@ public class RecoImage {
 		System.out.println("Concepts détectés:");
 		System.out.println("flux JSON brut retourné: "+data);
 		
-		//TODO: utiliser Jackson TreeModel pour récupérer et afficher les concepts retournés
+		//TODO: utiliser Jackson TreeModel pour récupérer et afficher les concepts retournés pour l'image spécifiée
+		//attention le flux de retour contient des infos relatives à des images d'exemple.
+		//il faut retourner les concepts associés à l'image provenant du serveur vps284011.ovh.net
+		//exemple:
+		/*
+		  "input": {
+				"id": "223872e2ddf1444489327a034d121c7d",
+				"data": {
+					"image": {
+						"url": "http://vps284011.ovh.net/ecam/image.jpg"
+					}
+				}
+			},
+			"data": {
+				"concepts": [
+				{
+						"id": "ai_c9n7SB25",
+						"name": "furniture",
+						"value": 0.9966653,
+						"app_id": "main"
+					}....
+		 */
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			JsonNode root = mapper.readTree(data);
@@ -107,7 +128,8 @@ public class RecoImage {
 		RecoImage ri = new RecoImage();
 		
 		//URL de l'image à classifier, à adapter à votre nom de VM.
-		String urlImage = "http://vps284011.ovh.net/ecam/ecam-1.jpg";
+		String urlImage = "http://vps284011.ovh.net/ecam/image.jpg";
+		
 		String res;
 		try {
 			res = ri.classifyImage(urlImage);
