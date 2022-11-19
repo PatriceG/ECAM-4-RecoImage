@@ -81,31 +81,36 @@ public class RecoImage {
 		System.out.println("Concepts détectés:");
 		System.out.println("flux JSON brut retourné: "+data);
 		
-		//TODO: utiliser Jackson TreeModel pour récupérer et afficher les concepts retournés pour l'image spécifiée
-		//attention le flux de retour contient des infos relatives à des images d'exemple.
-		//il faut retourner les concepts associés à l'image provenant du serveur vps284011.ovh.net
-		//exemple:
-		/*
-		  "input": {
-				"id": "223872e2ddf1444489327a034d121c7d",
-				"data": {
-					"image": {
-						"url": "http://vps284011.ovh.net/ecam/image.jpg"
-					}
-				}
-			},
-			"data": {
-				"concepts": [
-				{
-						"id": "ai_c9n7SB25",
-						"name": "furniture",
-						"value": 0.9966653,
-						"app_id": "main"
-					}....
-		 */
+		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			JsonNode root = mapper.readTree(data);
+		
+			//TODO: utiliser Jackson TreeModel pour récupérer et afficher les concepts retournés pour l'image spécifiée ainsi que
+			//le score de probabilité associé
+			//afficher ces deux infos sur la console
+			
+			//attention le flux de retour contient des infos relatives à des images d'exemple.
+			//il faut retourner les concepts associés à l'image provenant du serveur vps284011.ovh.net
+			//exemple:
+			/*
+			  "input": {
+					"id": "223872e2ddf1444489327a034d121c7d",
+					"data": {
+						"image": {
+							"url": "http://vps284011.ovh.net/ecam/image.jpg"
+						}
+					}
+				},
+				"data": {
+					"concepts": [
+					{
+							"id": "ai_c9n7SB25",
+							"name": "furniture",
+							"value": 0.9966653,
+							"app_id": "main"
+						}....
+			 */
 			
 			//TODO: compléter le code
 			//note: vous pouvez utiliser ce site pour formatter un flux json pour une facilité de lecture: https://jsonformatter.org/
@@ -128,7 +133,10 @@ public class RecoImage {
 		RecoImage ri = new RecoImage();
 		
 		//URL de l'image à classifier, à adapter à votre nom de VM.
-		String urlImage = "http://vps284011.ovh.net/ecam/image.jpg";
+		String urlImage = "http://vps284011.ovh.net/ecam/image-1.jpg";
+		
+		//commencez par exécuter le code en changeant d'image dans le code (10 images disponibles).
+		//ensuite, faites en sorte de lire le nom de l'image à utiliser depuis la console (voir le cour sur les Entrées/Sorties)
 		
 		String res;
 		try {
