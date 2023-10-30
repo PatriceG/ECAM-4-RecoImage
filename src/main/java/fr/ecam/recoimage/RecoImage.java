@@ -6,11 +6,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Iterator;
+import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 
 /**
  * Classe illustrant l'utilisation du client HTTP intégré à Java 11+ et de
@@ -35,7 +37,7 @@ public class RecoImage {
 			String service_url = String.format("https://api.clarifai.com/v2/models/%s/outputs", MODEL_ID);
 
 			// construction manuelle de JSON, envisageable pour un petit flux, sinon on
-			// passe plutôt par l'API de manipulation de JSON
+			// passe plutôt par l'API de manipulation de JSON JSONObject
 			String payload = "{\"inputs\": [{\"data\": {\"image\": {\"url\": \"" + url + "\"}}}]}";
 
 			// TODO PARTIE 2 du TP: utiliser le Jackson TreeModel pour construire le flux
@@ -86,11 +88,12 @@ public class RecoImage {
 		System.out.println("Concepts détectés:");
 		System.out.println("flux JSON brut retourné: " + data);
 
-		ObjectMapper mapper = new ObjectMapper();
+		
 		try {
-			JsonNode root = mapper.readTree(data);
+			//parse le flux json passé dans la chaine de caractères data
+			JSONObject jo = new JSONObject(data);
 
-			// TODO: utiliser Jackson TreeModel pour récupérer et afficher les concepts
+			// TODO: utiliser la librairie JSON-Java pour récupérer et afficher les concepts
 			// retournés pour l'image spécifiée ainsi que
 			// le score de probabilité associé
 			// afficher ces deux infos sur la console
@@ -99,21 +102,65 @@ public class RecoImage {
 			// d'exemple.
 			// il faut retourner les concepts associés à l'image provenant du serveur
 			// vps284011.ovh.net
-			// exemple:
-			/*
-			 * "input": { "id": "223872e2ddf1444489327a034d121c7d", "data": { "image": {
-			 * "url": "http://vps284011.ovh.net/ecam/image.jpg" } } }, "data": { "concepts":
-			 * [ { "id": "ai_c9n7SB25", "name": "furniture", "value": 0.9966653, "app_id":
-			 * "main" }....
+			// extrait de flux de réponse:			
+			 /* {
+	"status": {
+		"code": 10000,
+		"description": "Ok",
+	},
+	"outputs": [
+		{
+			"id": "63a98eaff84b417287dc33bab7ff2e30",
+			"status": {
+				"code": 10000,
+				"description": "Ok"
+			},
+			"created_at": "2023-10-30T13:43:21.444252525Z",
+			"model": {
+				"id": "general-image-recognition",
+				"name": "Image Recognition",
+				"created_at": "2016-03-09T17:11:39.608845Z",
+				...
+			},
+			"input": {
+				"id": "d359a2945d0a4ea38880508185cbee05",
+				"data": {
+					"image": {
+						"url": "http://vps284011.ovh.net/ecam/image-1.jpg"
+					}
+				}
+			},
+			"data": {
+				"concepts": [
+					{
+						"id": "ai_c9n7SB25",
+						"name": "furniture",
+						"value": 0.9966653,
+						"app_id": "main"
+					},
 			 */
 
-			// TODO: compléter le code
 			// note: vous pouvez utiliser ce site pour formatter un flux json pour une
 			// facilité de lecture: https://jsonformatter.org/
 			// copier/coller y le flux JSON brut affiché sur la console
-			// pour vous aider à naviguer dans l'arbre JSON avec l'API Jackson
+			// pour vous aider à naviguer dans l'arbre JSON avec l'API JSON-OBJECT
+			
 
-		} catch (IOException e) {
+			//récupère un tableau des concepts détectés, et de leur probabilité
+			//on utilise le modèle du flux JSON ci-dessus pour parcourir le flux 
+			//on prend le premier élément du tableau "outputs", duquel on prend l'élément "data"
+			//duquel on prend le tableau "concepts" sur lequel on itère ensuite
+			JSONArray concepts = ((JSONObject) jo.getJSONArray("outputs").get(0)).getJSONObject("data").getJSONArray("concepts");
+			System.out.println(concepts);
+			
+			// TODO: compléter le code pour faire une boucle sur chaque concept du JSONArray concepts et afficher les attributs "name" et "value" de chaque concept
+			//Utiliser la doc de JSONArray: https://stleary.github.io/JSON-java/org/json/JSONArray.html 
+			//et en particulier la méthode iterator() (iterator() est non-typé, il faudra donc utiliser un opérateur de cast dans la bouche
+
+			//...compléterl le code ici...
+			
+			
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
@@ -146,27 +193,26 @@ public class RecoImage {
 			var response = client.send(request, HttpResponse.BodyHandlers.ofString());
 			System.out.println("Réponse Brute:" + response.body());
 
-			// TODO: Parser le flux avec le Jackson TreeModel: instancier un ObjectMapper et
-			// parser via mapper.readTree(responde.body())
-
+			//parse le flux json reçu
+			JSONObject jo = new JSONObject(response.body());
 	
-			//TODO:
-			// prendre le dernier élément de records[]
-			// Attention records[] peut être vide si aucun bus n'est prévu à cet arrêt
-			// détecter ce cas (via la méthode isEmpty(null) de JsonNode et afficher un
-			// message dans ce cas)
-
-			// il n'y a pas de moyen simple d'aller au dernier élément du tableau de records
-			// => on récupère un Iterator<JsonNode> sur le tableau via
-			// recordsNode.iterator() et on le parcourt
-			// en entier en stockant le JsonNode retourné par la méthode next() de
-			// l'iterator dans une variable locale, utilisée par la suite
-
-			// en sortie de la boucle while on on a l'heure de passage estimée dans l'attribut arriveetheorique de l'attribut fields du dernier record
-			// aide: on aura un truc du genre lastRecord.path("fields").path("arriveetheorique").asText() pour récupérer l'heure de passage
 			
-	
-		} catch (IOException | InterruptedException e) {
+			
+			
+			//TODO:
+			// prendre le dernier élément du tableau (JSOONArray) records[]
+			// Attention records[] peut être vide si aucun bus n'est prévu à cet arrêt
+			// détecter ce cas et afficher un message "Aucun bus à cet arrêt", puis quitter par un System.exit(0) )
+
+			//prendre ensuite le dernier élément du tableau records
+			//JSONObject lastRecord = records.getJSONObject(records.length()-1);
+			//et afficher la valeur de l'attribut "arriveetheorique" qui se trouve lui-même dans un attribut "fields"
+
+			
+			System.out.println("Arrivée théorique à l'arrêt à: " + "....");
+
+			
+		} catch (JSONException | IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -190,12 +236,12 @@ public class RecoImage {
 		String res;
 		try {
 			//Partie 1: traitement du flux de retour du service de classification d'images de ClarifAI:
-			 res = ri.classifyImage(urlImage);
-			 ri.displayConcepts(res);
+			 //res = ri.classifyImage(urlImage);
+			 //ri.displayConcepts(res);
 			 
 			 //Partie 2: traitement du flux de retour du service d'horaires de passage de bus de la ville de Rennes:
 			//ri.afficheHoraireBus("57", 2311);
-			//ri.afficheHoraireBus("C1", 1007);
+			ri.afficheHoraireBus("C1", 1007);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
