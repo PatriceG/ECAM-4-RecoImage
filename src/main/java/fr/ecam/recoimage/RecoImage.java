@@ -240,8 +240,11 @@ public class RecoImage {
 			 //ri.displayConcepts(res);
 			 
 			 //Partie 2: traitement du flux de retour du service d'horaires de passage de bus de la ville de Rennes:
-			//ri.afficheHoraireBus("57", 2311);
-			ri.afficheHoraireBus("C1", 1007);
+			 //Arrêt Campus Ker Lann:
+			 //ri.afficheHoraireBus("C7", 2317);
+			
+			 //Arrêt Assomption sur ligne 14:
+			 //ri.afficheHoraireBus("14", 1007);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
