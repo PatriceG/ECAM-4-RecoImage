@@ -40,18 +40,13 @@ public class RecoImage {
 			// passe plutôt par l'API de manipulation de JSON JSONObject
 			String payload = "{\"inputs\": [{\"data\": {\"image\": {\"url\": \"" + url + "\"}}}]}";
 
-			// TODO PARTIE 2 du TP: utiliser le Jackson TreeModel pour construire le flux
-			// payload au lieu de passer par une chaine de caractères
+			// TODO PARTIE 2 du TP: utiliser JSON-Java pour construire le flux
+			// payload au lieu de passer par une concaténation de chaines de caractères.
+			// Utiliser le cours, cette doc peut aussi vous être utile: https://www.baeldung.com/java-org-json
+			// note, au final il faudra sérialiser le flux JSON ainsi construit en une chaine de caractères, attendue dans la suite du programme
+			
 
-			// Note: ne fonctionne pas pour l'appel du service, mais on peut l'activer en
-			// phase de debug
-			// pour une lecture plus facile quand on construit le flux via le Jackson
-			// TreeModel
-			// mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-			// récupère la payload JSON sous forme d'une chaine de caractères
-			// String payload = mapper.writeValueAsString(root);
-
+			// documentation du code ci-dessous:			
 			// construit une requète via l'API builder, avec tous les en-têtes et la
 			// payload:
 			// noter le mot-clé var apparu avec Java11 qui permet de ne pas utiliser le type
@@ -87,7 +82,6 @@ public class RecoImage {
 	public void displayConcepts(String data) {
 		System.out.println("Concepts détectés:");
 		System.out.println("flux JSON brut retourné: " + data);
-
 		
 		try {
 			//parse le flux json passé dans la chaine de caractères data
