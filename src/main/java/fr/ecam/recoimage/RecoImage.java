@@ -230,8 +230,8 @@ public class RecoImage {
 		String res;
 		try {
 			//Partie 1: traitement du flux de retour du service de classification d'images de ClarifAI:
-			 //res = ri.classifyImage(urlImage);
-			 //ri.displayConcepts(res);
+			 res = ri.classifyImage(urlImage);
+			 ri.displayConcepts(res);
 			 
 			 //Partie 2: traitement du flux de retour du service d'horaires de passage de bus de la ville de Rennes:
 			 //Arrêt Campus Ker Lann:
