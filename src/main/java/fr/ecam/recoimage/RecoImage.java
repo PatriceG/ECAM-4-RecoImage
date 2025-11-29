@@ -31,10 +31,10 @@ public class RecoImage {
 		String res = null;
 
 		try {
-			String MODEL_ID = "aaa03c23b3724a16a56b629203edc62c"; // modèle de classification d'images "général"
-			String CLARIFAI_API_KEY = "3f11c47ba665437692273b01e4e97af5";
+
+			String CLARIFAI_API_KEY = "04e2829fd68e4d78bb48296f3f1110c4";
 			// URL du service à appeler
-			String service_url = String.format("https://api.clarifai.com/v2/models/%s/outputs", MODEL_ID);
+			String service_url = "https://api.clarifai.com/v2/users/clarifai/apps/main/models/general-image-recognition/versions/aa7f35c01e0642fda5cf400f543e7c40/outputs";
 
 			// construction manuelle de JSON, envisageable pour un petit flux, sinon on
 			// passe plutôt par l'API de manipulation de JSON JSONObject
